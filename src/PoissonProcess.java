@@ -14,6 +14,14 @@ public class PoissonProcess {
     }
 
     /**
+     * Default constructor
+     */
+    public PoissonProcess() {
+        this.lambda = 1;
+        this.rand = new Random();
+    }
+
+    /**
      * getter
      * @return rand
      */
