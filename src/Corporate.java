@@ -1,13 +1,18 @@
-public class Corporate extends PoissonProcess implements CustomerServiceAgent  {
+public class Corporate extends PoissonProcess implements CustomerServiceAgent {
 
 
     @Override
-    public void handle() {
-
+    public boolean handle() {
+        return true;
     }
 
     @Override
-    public double getLambda() {
+    public double getLambda () {
         return super.getLambda();
     }
+
+    public String toString() {
+        return "Process time is " + getLambda();
+    }
+
 }

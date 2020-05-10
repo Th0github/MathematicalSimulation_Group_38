@@ -1,4 +1,6 @@
 public interface CustomerServiceAgent {
-    void handle(); //takes the call
+    boolean handle(); //takes the call
     double getLambda();
+    String toString();
+
 }
