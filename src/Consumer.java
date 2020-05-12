@@ -26,6 +26,11 @@ public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
         return super.getLambda();
     }
 
+    @Override
+    public int getID() {
+        return consumer_id;
+    }
+
     public String toString() {
         return "Consumer ID: " + consumer_id + " was handled at lambda = " + getLambda();
     }

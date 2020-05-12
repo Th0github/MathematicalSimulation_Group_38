@@ -7,6 +7,11 @@ public class Corporate extends PoissonProcess implements CustomerServiceAgent {
     private final double MINUTE_TO_HOUR = 60;
     private final double SECOND_TO_HOUR = 3600; //this is what we will be using
 
+    //TODO: make this process not equal consumer corporate id.
+    private int corporate_id;
+
+    public Corporate(int corporate_id) {this.corporate_id = corporate_id; }
+
     @Override
     public boolean handle() {
         return true;
@@ -15,6 +20,11 @@ public class Corporate extends PoissonProcess implements CustomerServiceAgent {
     @Override
     public double getLambda () {
         return super.getLambda();
+    }
+
+    @Override
+    public int getID() {
+        return corporate_id;
     }
 
     public String toString() {
