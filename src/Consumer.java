@@ -4,6 +4,9 @@ import java.util.Random;
  * @author ohnoyes
  */
 public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
+    //cost per hour
+    private final double COST = 35;
+
     private int consumer_id;
 
     //Average rate of call per minute
@@ -28,6 +31,7 @@ public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
         this.consumer_id = consumer_id;
     }
 
+    public Consumer() {}
 
     /**
      * Coll is only handled if consumer service representative is idle, i.e. not taking another call

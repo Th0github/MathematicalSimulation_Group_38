@@ -2,6 +2,9 @@
  * @author ohnoyes
  */
 public class Corporate extends PoissonProcess implements CustomerServiceAgent {
+    //cost per hour
+    private final double COST = 60;
+
     //Average rate of call per minute
     private final double RATE_EIGHT_am_to_SIX_pm = 1.0;
     private final double RATE_SIX_am_to_EIGHT_am = 0.2;
@@ -17,6 +20,8 @@ public class Corporate extends PoissonProcess implements CustomerServiceAgent {
 
     //TODO: make this process not equal consumer corporate id.
     private int corporate_id;
+
+    public Corporate(){}
 
     public Corporate(int corporate_id) {this.corporate_id = corporate_id; }
 
