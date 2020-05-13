@@ -1,21 +1,26 @@
+package Engine;
+
+import Engine.CEventList;
+import Engine.CProcess;
+
 /**
- *	Machine in a factory
+ *	Engine.Machine in a factory
  *	@author Joel Karel
  *	@version %I%, %G%
  */
-public class Machine implements CProcess,ProductAcceptor
+public class Machine implements CProcess, ProductAcceptor
 {
 	/** Product that is being handled  */
 	private Product product;
 	/** Eventlist that will manage events */
 	private final CEventList eventlist;
-	/** Queue from which the machine has to take products */
+	/** Engine.Queue from which the machine has to take products */
 	private Queue queue;
-	/** Sink to dump products */
+	/** Engine.Sink to dump products */
 	private ProductAcceptor sink;
 	/** Status of the machine (b=busy, i=idle) */
 	private char status;
-	/** Machine name */
+	/** Engine.Machine name */
 	private final String name;
 	/** Mean processing time */
 	private double meanProcTime;
@@ -28,7 +33,7 @@ public class Machine implements CProcess,ProductAcceptor
 	/**
 	*	Constructor
 	*        Service times are exponentially distributed with mean 30
-	*	@param q	Queue from which the machine has to take products
+	*	@param q	Engine.Queue from which the machine has to take products
 	*	@param s	Where to send the completed products
 	*	@param e	Eventlist that will manage events
 	*	@param n	The name of the machine
@@ -47,7 +52,7 @@ public class Machine implements CProcess,ProductAcceptor
 	/**
 	*	Constructor
 	*        Service times are exponentially distributed with specified mean
-	*	@param q	Queue from which the machine has to take products
+	*	@param q	Engine.Queue from which the machine has to take products
 	*	@param s	Where to send the completed products
 	*	@param e	Eventlist that will manage events
 	*	@param n	The name of the machine
@@ -67,7 +72,7 @@ public class Machine implements CProcess,ProductAcceptor
 	/**
 	*	Constructor
 	*        Service times are pre-specified
-	*	@param q	Queue from which the machine has to take products
+	*	@param q	Engine.Queue from which the machine has to take products
 	*	@param s	Where to send the completed products
 	*	@param e	Eventlist that will manage events
 	*	@param n	The name of the machine

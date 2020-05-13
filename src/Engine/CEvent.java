@@ -1,3 +1,5 @@
+package Engine;
+
 /**
  *	Event class
  *	Events that facilitate changes in the simulation
@@ -20,7 +22,7 @@ public class CEvent
 	*	@param tp	The type of the event
 	*	@param tme	The time on which the event will be executed
 	*/
-	public CEvent(CProcess dl,int tp, double tme)
+	public CEvent(CProcess dl, int tp, double tme)
 	{
 		target=dl;
 		type=tp;

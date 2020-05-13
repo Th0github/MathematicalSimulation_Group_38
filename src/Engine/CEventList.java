@@ -1,3 +1,5 @@
+package Engine;
+
 import java.util.ArrayList;
 
 /**
@@ -18,7 +20,7 @@ public class CEventList implements CProcess
 
 	/**
 	*	Standard constructor
-	*	Create an CEventList object
+	*	Create an Engine.CEventList object
 	*/
 	public CEventList()
 	{
