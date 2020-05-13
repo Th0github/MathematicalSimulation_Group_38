@@ -38,10 +38,6 @@ public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
         return isIdle;
     }
 
-    /**
-     * getter
-     * @return
-     */
     @Override
     public double getLambda() {
         return super.getLambda();
@@ -56,5 +52,8 @@ public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
         return "Consumer ID: " + consumer_id + " was handled at lambda = " + getLambda();
     }
 
+    public void setIdle(boolean isIdle) {
+        this.isIdle = isIdle;
+    }
 
 }

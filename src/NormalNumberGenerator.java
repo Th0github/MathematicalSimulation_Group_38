@@ -14,7 +14,6 @@ public class NormalNumberGenerator {
             y = 2.0 * Math.random() - 1.0;
             r = x*x + y*y;
         } while (r > 1 || r == 0);
-        // http://en.wikipedia.org/wiki/Box-Muller_transform
 
 
         // formula for Normal Distribution z
