@@ -20,5 +20,8 @@ public class Simulate {
         PoissonProcess corporateArrivalEightToSix = new PoissonProcess(corporate.RATE_EIGHT_am_to_SIX_pm, uniformVariate);
         PoissonProcess corporateArrivalSixToEight = new PoissonProcess(corporate.RATE_SIX_am_to_EIGHT_am, uniformVariate);
 
+        System.out.println("Call recieved at first run: " + consumer.events());
+
+        //TODO: simulate service time with TruncatedNormalDistribution.
     }
 }
