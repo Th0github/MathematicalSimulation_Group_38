@@ -2,11 +2,17 @@
  * @author ohnoyes
  */
 public class NormalNumberGenerator {
-    public double r, x, y, z;
+    //public double r, x, y, z;
     /**
      * Uses the Box and Muller method for generating Normal random numbers.
      */
-    public NormalNumberGenerator() {
+
+    /**
+     * generates the random variate on the normal distribution
+     * @return the generated random variate
+     */
+    public double generate(){
+        double r, x, y, z;
 
         // find a uniform random point (x, y) inside unit circle
         do {
@@ -19,15 +25,6 @@ public class NormalNumberGenerator {
         // formula for Normal Distribution z
         z = x * Math.sqrt(-2.0 * Math.log(r) / r);
 
-        // print it
-        System.out.println(z);
-    }
-
-    /**
-     * generates the random variate on the normal distribution
-     * @return the generated random variate
-     */
-    public double generate(){
-        return this.z;
+        return z;
     }
 }
