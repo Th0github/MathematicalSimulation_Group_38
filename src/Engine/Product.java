@@ -1,6 +1,8 @@
+package Engine;
+
 import java.util.ArrayList;
 /**
- *	Product that is send trough the system
+ *	Engine.Product that is send trough the system
  *	@author Joel Karel
  *	@version %I%, %G%
  */

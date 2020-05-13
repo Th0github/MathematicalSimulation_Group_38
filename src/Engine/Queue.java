@@ -1,7 +1,9 @@
+package Engine;
+
 import java.util.ArrayList;
 
 /**
- *	Queue that stores products until they can be handled on a machine machine
+ *	Engine.Queue that stores products until they can be handled on a machine machine
  *	@author Joel Karel
  *	@version %I%, %G%
  */
@@ -38,7 +40,7 @@ public class Queue implements ProductAcceptor
 				return true;
 			}
 			else
-				return false; // Machine rejected; don't queue request
+				return false; // Engine.Machine rejected; don't queue request
 		}
 		else
 		{

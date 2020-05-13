@@ -1,6 +1,8 @@
+package Engine;
+
 /**
  *	A source of products
- *	This class implements CProcess so that it can execute events.
+ *	This class implements Engine.CProcess so that it can execute events.
  *	By continuously creating new events, the source keeps busy.
  *	@author Joel Karel
  *	@version %I%, %G%
@@ -9,7 +11,7 @@ public class Source implements CProcess
 {
 	/** Eventlist that will be requested to construct events */
 	private CEventList list;
-	/** Queue that buffers products for the machine */
+	/** Engine.Queue that buffers products for the machine */
 	private ProductAcceptor queue;
 	/** Name of the source */
 	private String name;
@@ -63,7 +65,7 @@ public class Source implements CProcess
 	*	@param n	Name of object
 	*	@param ia	interarrival times
 	*/
-	public Source(ProductAcceptor q,CEventList l,String n,double[] ia)
+	public Source(ProductAcceptor q, CEventList l, String n, double[] ia)
 	{
 		list = l;
 		queue = q;

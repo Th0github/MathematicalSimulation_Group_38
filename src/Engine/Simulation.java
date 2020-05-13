@@ -1,3 +1,5 @@
+package Engine;
+
 /**
  *	Example program for using eventlists
  *	@author Joel Karel
@@ -22,11 +24,11 @@ public class Simulation {
 	// A queue for the machine
 	Queue q = new Queue();
 	// A source
-	Source s = new Source(q,l,"Source 1");
+	Source s = new Source(q,l,"Engine.Source 1");
 	// A sink
-	Sink si = new Sink("Sink 1");
+	Sink si = new Sink("Engine.Sink 1");
 	// A machine
-	Machine m = new Machine(q,si,l,"Machine 1");
+	Machine m = new Machine(q,si,l,"Engine.Machine 1");
 	// start the eventlist
 	l.start(2000); // 2000 is maximum time
     }
