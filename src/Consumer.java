@@ -10,8 +10,8 @@ public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
     private int consumer_id;
 
     //Average rate of call per minute
-    private final double AVERAGE_RATE_PER_MINUTE = 2;
-    private final double AVERAGE_RATE_PER_MINUTE_3_AM = 0.2;
+    public final double AVERAGE_RATE_PER_MINUTE = 2;
+    public final double AVERAGE_RATE_PER_MINUTE_3_AM = 0.2;
 
     //Time per hour, minute, etc.
     private final double MINUTE_TO_HOUR = 60;

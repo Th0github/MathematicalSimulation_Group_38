@@ -6,8 +6,8 @@ public class Corporate extends PoissonProcess implements CustomerServiceAgent {
     private final double COST = 60;
 
     //Average rate of call per minute
-    private final double RATE_EIGHT_am_to_SIX_pm = 1.0;
-    private final double RATE_SIX_am_to_EIGHT_am = 0.2;
+    public final double RATE_EIGHT_am_to_SIX_pm = 1.0;
+    public final double RATE_SIX_am_to_EIGHT_am = 0.2;
 
     //Time per hour, minute, etc.
     private final double MINUTE_TO_HOUR = 60;
