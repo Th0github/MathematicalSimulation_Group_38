@@ -7,6 +7,11 @@ public class Corporate extends PoissonProcess implements CustomerServiceAgent {
     private final double MINUTE_TO_HOUR = 60;
     private final double SECOND_TO_HOUR = 3600; //this is what we will be using
 
+    //service times
+    private final double AVERAGE_SERVICE_TIME = 3.6;
+    private final double STANDARD_DEV_SERVICE_TIME = 1.2;
+    private final double MIN_CALL_TIME = 45.0/60;
+
     //TODO: make this process not equal consumer corporate id.
     private int corporate_id;
 
