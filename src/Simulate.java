@@ -3,12 +3,15 @@ import java.util.Random;
 
 public class Simulate {
     public static void main(String[] args) {
-        //Uniform Distribution
-        Random uniformVariate = new Random();
-        //Normal Distribution
-        NormalNumberGenerator rng = new NormalNumberGenerator();
         Corporate corporate = new Corporate();
         Consumer consumer = new Consumer();
+        //Uniform Distribution
+        Random uniformVariate = new Random();
+        //Truncated Normal distribution
+        TruncatedNormalDistribution servTimeCons = new TruncatedNormalDistribution(consumer.AVERAGE_SERVICE_TIME, consumer.STANDARD_DEV_SERVICE_TIME, consumer.MIN_CALL_TIME);
+        TruncatedNormalDistribution servTimeCorp = new TruncatedNormalDistribution(corporate.AVERAGE_SERVICE_TIME, corporate.STANDARD_DEV_SERVICE_TIME, corporate.MIN_CALL_TIME);
+
+
         int sampleCount = 100;
         //Three shifts, for now we just record 10 events, either increase row count for more data or use Arraylist
         double[][] timeShift = new double[3][sampleCount];
@@ -22,6 +25,9 @@ public class Simulate {
 
         System.out.println("Call recieved at first run: " + consumer.events());
 
-        //TODO: simulate service time with TruncatedNormalDistribution.
+        //TODO: we need to link everything together, get the service linked with the serviceTime
+        System.out.println("duration of call if consumer = " + servTimeCons.generate());
+        System.out.println("duration of call if corporate = " + servTimeCorp.generate());
+
     }
 }

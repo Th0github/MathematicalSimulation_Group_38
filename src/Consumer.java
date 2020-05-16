@@ -20,9 +20,9 @@ public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
     private boolean isIdle;
 
     //service times
-    private final double AVERAGE_SERVICE_TIME = 1.2;
-    private final double STANDARD_DEV_SERVICE_TIME = 35.0/60;
-    private final double MIN_CALL_TIME = 25.0/60;
+    public final double AVERAGE_SERVICE_TIME = 1.2;
+    public final double STANDARD_DEV_SERVICE_TIME = 35.0/60;
+    public final double MIN_CALL_TIME = 25.0/60;
 
     /**
      * Initialize consumer
