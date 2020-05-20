@@ -1,9 +1,15 @@
+import Engine.Machine;
+import Engine.Queue;
+import Engine.Sink;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
  * @author ohnoyes
  */
 public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
+    public Machine machine = new Machine(new Queue(), new Sink(""), );
     //cost per hour
     private final double COST = 35;
 
@@ -17,7 +23,7 @@ public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
     private final double MINUTE_TO_HOUR = 60;
     private final double SECOND_TO_HOUR = 3600;
 
-    private boolean isIdle;
+    private boolean isIdle = true;
 
     //service times
     public final double AVERAGE_SERVICE_TIME = 1.2;
@@ -59,5 +65,6 @@ public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
     public void setIdle(boolean isIdle) {
         this.isIdle = isIdle;
     }
+    public boolean getIdle(){return isIdle;}
 
 }

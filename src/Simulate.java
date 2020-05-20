@@ -1,6 +1,7 @@
 import Engine.CEvent;
 import Engine.CEventList;
 import Engine.Process;
+import Engine.Queue;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -92,24 +93,26 @@ public class Simulate {
     {
         System.out.println("Cost of this roster = " + createRoster(5,5,5,5,5,5));
         CEventList eventList = new CEventList();
+        ArrayList<Customer> customerList = new ArrayList<>();
         int j = 0;
         for(int i = 0; i<time; i++)
         {
-
+            //TO-DO : Figure out queueing time
             /** 6-8am*/
             if(j<2*60)
             {
                 int cons = consumerArrival.events(i);
                 for(int k = 0; k<cons; k++)
                 {
+                    double dur = servTimeCons.generate();
 
-                    eventList.add(new Process(), 0, i);
+                    eventList.add(new Process(dur), 0, i);
                 }
                 int corp = corporateArrivalSixToEight.events(i);
                 for(int k = 0; k<corp; k++)
                 {
-
-                    eventList.add(new Process(), 1, i);
+                    double dur = servTimeCorp.generate();
+                    eventList.add(new Process(dur), 1, i);
                 }
             }/**8am-6pm*/
             else if(j<14*60)
@@ -117,13 +120,14 @@ public class Simulate {
                 int cons = consumerArrival.events(i);
                 for(int k = 0; k<cons; k++)
                 {
-                    eventList.add(new Process(), 0, i);
+                    double dur = servTimeCons.generate();
+                    eventList.add(new Process(dur), 0, i);
                 }
                 int corp = corporateArrivalEightToSix.events(i);
                 for(int k = 0; k<corp; k++)
                 {
-
-                    eventList.add(new Process(), 1, i);
+                    double dur = servTimeCorp.generate();
+                    eventList.add(new Process(dur), 1, i);
                 }
             }/** 6pm-6am*/
             else if(j<24*60)
@@ -132,8 +136,8 @@ public class Simulate {
                 int corp = corporateArrivalSixToEight.events(i);
                 for(int k = 0; k<corp; k++)
                 {
-
-                    eventList.add(new Process(), 1, i);
+                    double dur = servTimeCorp.generate();
+                    eventList.add(new Process(dur), 1, i);
                 }
 
                 /** 3am*/
@@ -142,7 +146,8 @@ public class Simulate {
                     int cons = consumerArrivalThreeAM.events(i);
                     for(int k = 0; k<cons; k++)
                     {
-                        eventList.add(new Process(), 0, i);
+                        double dur = servTimeCons.generate();
+                        eventList.add(new Process(dur), 0, i);
                     }
                 }
                 else
@@ -150,7 +155,8 @@ public class Simulate {
                     int cons = consumerArrival.events(i);
                     for(int k = 0; k<cons; k++)
                     {
-                        eventList.add(new Process(), 0, i);
+                        double dur = servTimeCons.generate();
+                        eventList.add(new Process(dur), 0, i);
                     }
                 }
             }

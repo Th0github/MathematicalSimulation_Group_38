@@ -9,8 +9,15 @@ import java.util.ArrayList;
  *	@author Joel Karel
  *	@version %I%, %G%
  */
+
+
+
 public class CEventList implements CProcess
 {
+
+    Queue consumerQueue = new Queue();
+    Queue corporateQueue = new Queue();
+    Queue productAcceptor = new Queue();
 	/** The time in the simulation */
 	private double currentTime;
 	/** List of events that have to be executed */
@@ -34,6 +41,7 @@ public class CEventList implements CProcess
 	*	@param target The object that will process the event
 	*	@param type A type indicator of the event for objects that can process multiple types of events.
 	*	@param tme The time at which the event will be executed
+	 *
 	*/
 	public void add(CProcess target, int type, double tme)
 	{
@@ -41,6 +49,8 @@ public class CEventList implements CProcess
 		// First create a new event using the parameters
 		CEvent evnt;
                 evnt = new CEvent(target,type,tme);
+                evnt.superlist = this;
+
 		// Now it is examened where the event has to be inserted in the list
 		for(int i=0;i<events.size();i++)
 		{

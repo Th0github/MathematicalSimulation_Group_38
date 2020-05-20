@@ -21,6 +21,7 @@ public class Corporate extends PoissonProcess implements CustomerServiceAgent {
     //TODO: make this process not equal consumer corporate id.
     private int corporate_id;
 
+    private boolean isIdle = true;
     public Corporate(){}
 
     public Corporate(int corporate_id) {this.corporate_id = corporate_id; }
@@ -44,4 +45,7 @@ public class Corporate extends PoissonProcess implements CustomerServiceAgent {
         return "Process time is " + getLambda();
     }
 
+    public void setIdle(boolean b){isIdle = b;}
+
+    public boolean getIdle(){return isIdle;}
 }

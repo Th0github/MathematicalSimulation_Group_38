@@ -12,16 +12,18 @@ public class CEvent
 	/** The object involved with the event */
 	private CProcess target;
 	/** The type of the event */
-	/** 0 = consumer 1 = corporate */
+	/** 0 = consumer 1 = corporate departure - 2 = consumer 3 = corporate arrival*/
 	private int type;
 	/** The time on which the event will be executed */
 	private double executionTime;
 
+	public CEventList superlist;
 	/**
 	*	Constructor for objects
 	*	@param dl	The object that will process the event
 	*	@param tp	The type of the event
 	*	@param tme	The time on which the event will be executed
+
 	*/
 	public CEvent(CProcess dl, int tp, double tme)
 	{
@@ -36,6 +38,7 @@ public class CEvent
 	public void execute()
 	{
 		target.execute(type,executionTime);
+
 	}
 	
 	/**

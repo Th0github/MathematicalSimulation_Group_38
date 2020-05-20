@@ -56,7 +56,7 @@ public class Machine implements CProcess, ProductAcceptor
 	*	@param s	Where to send the completed products
 	*	@param e	Eventlist that will manage events
 	*	@param n	The name of the machine
-	*        @param m	Mean processing time
+	*   @param m	Mean processing time
 	*/
 	public Machine(Queue q, ProductAcceptor s, CEventList e, String n, double m)
 	{
@@ -76,7 +76,7 @@ public class Machine implements CProcess, ProductAcceptor
 	*	@param s	Where to send the completed products
 	*	@param e	Eventlist that will manage events
 	*	@param n	The name of the machine
-	*        @param st	service times
+	*   @param st	service times
 	*/
 	public Machine(Queue q, ProductAcceptor s, CEventList e, String n, double[] st)
 	{
