@@ -1,7 +1,5 @@
-import Engine.CEvent;
-import Engine.CEventList;
+import Engine.*;
 import Engine.Process;
-import Engine.Queue;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -92,7 +90,7 @@ public class Simulate {
     public void simulationLoop(int time)
     {
         System.out.println("Cost of this roster = " + createRoster(5,5,5,5,5,5));
-        CEventList eventList = new CEventList();
+        CEventList eventList = new CEventList(new DataClass());
         ArrayList<Customer> customerList = new ArrayList<>();
         int j = 0;
         for(int i = 0; i<time; i++)

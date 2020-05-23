@@ -1,5 +1,7 @@
 package Engine;
 
+import java.util.Random;
+
 /**
  *	A source of products
  *	This class implements Engine.CProcess so that it can execute events.
@@ -21,7 +23,12 @@ public class Source implements CProcess
 	private double[] interarrivalTimes;
 	/** Interarrival time iterator */
 	private int interArrCnt;
-
+	private Random uniformVariate = new Random();
+	private PoissonProcess consumerArrival = new PoissonProcess(2, uniformVariate);
+	private PoissonProcess consumerArrivalThreeAM = new PoissonProcess(0.2, uniformVariate);
+	private PoissonProcess corporateArrivalEightToSix = new PoissonProcess(1, uniformVariate);
+	private PoissonProcess corporateArrivalSixToEight = new PoissonProcess(0.2, uniformVariate);
+	private DataClass data;
 	/**
 	*	Constructor, creates objects
 	*        Interarrival times are exponentially distributed with mean 33
@@ -29,14 +36,41 @@ public class Source implements CProcess
 	*	@param l	The eventlist that is requested to construct events
 	*	@param n	Name of object
 	*/
-	public Source(ProductAcceptor q,CEventList l,String n)
+	public Source(ProductAcceptor q,CEventList l,String n, DataClass data)
 	{
+		this.data = data;
 		list = l;
 		queue = q;
+		//TODO n needs to represent the type of events this generates, 'consumer' or 'customer'
 		name = n;
 		meanArrTime=33;
 		// put first event in list for initialization
-		list.add(this,0,drawRandomExponential(meanArrTime)); //target,type,time
+		list.add(this,0,getArrivalTime(n)); //target,type,time
+	}
+
+	private double getArrivalTime(String n) {
+		double a = 0;
+
+		//TODO ! Create a getCurrentTime()
+		if(n == "consumer")
+		{
+			a = consumerArrival.timeNextEvent();// + currentTime;
+
+			// IF 3AM -> a = consumerArrivalThreeAM.timeNextEvent();
+		}
+		else if(n == "corporate")
+		{
+			a = corporateArrivalEightToSix.timeNextEvent();
+
+			// IF 6PM-8AM -> a = corporateArrivalSixToEight.timeNextEvent();
+		}
+		else
+		{
+			// Shouldn't happen, failsafe for now
+			a = drawRandomExponential(meanArrTime);
+		}
+
+		return a;
 	}
 
 	/**
@@ -47,8 +81,9 @@ public class Source implements CProcess
 	*	@param n	Name of object
 	*	@param m	Mean arrival time
 	*/
-	public Source(ProductAcceptor q,CEventList l,String n,double m)
+	public Source(ProductAcceptor q,CEventList l,String n,double m, DataClass data)
 	{
+		this.data = data;
 		list = l;
 		queue = q;
 		name = n;
@@ -65,8 +100,9 @@ public class Source implements CProcess
 	*	@param n	Name of object
 	*	@param ia	interarrival times
 	*/
-	public Source(ProductAcceptor q, CEventList l, String n, double[] ia)
+	public Source(ProductAcceptor q, CEventList l, String n, double[] ia, DataClass data)
 	{
+		this.data = data;
 		list = l;
 		queue = q;
 		name = n;
@@ -82,6 +118,7 @@ public class Source implements CProcess
 	{
 		// show arrival
 		System.out.println("Arrival at time = " + tme);
+		data.arrivalTimes(tme);
 		// give arrived product to queue
 		Product p = new Product();
 		p.stamp(tme,"Creation",name);

@@ -9,7 +9,6 @@ import java.util.Random;
  * @author ohnoyes
  */
 public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
-    public Machine machine = new Machine(new Queue(), new Sink(""), );
     //cost per hour
     private final double COST = 35;
 

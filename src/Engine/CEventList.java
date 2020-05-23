@@ -14,10 +14,8 @@ import java.util.ArrayList;
 
 public class CEventList implements CProcess
 {
-
-    Queue consumerQueue = new Queue();
-    Queue corporateQueue = new Queue();
-    Queue productAcceptor = new Queue();
+	public int arrivalCounter = 0;
+	public int departureCounter = 0;
 	/** The time in the simulation */
 	private double currentTime;
 	/** List of events that have to be executed */
@@ -29,8 +27,12 @@ public class CEventList implements CProcess
 	*	Standard constructor
 	*	Create an Engine.CEventList object
 	*/
-	public CEventList()
+
+	private DataClass data;
+
+	public CEventList(DataClass data)
 	{
+		this.data = data;
 		currentTime = 0;
 		stopFlag = false;
 		events = new ArrayList<>();
@@ -45,12 +47,23 @@ public class CEventList implements CProcess
 	*/
 	public void add(CProcess target, int type, double tme)
 	{
+
 		boolean success=false;
 		// First create a new event using the parameters
 		CEvent evnt;
-                evnt = new CEvent(target,type,tme);
-                evnt.superlist = this;
-
+		evnt = new CEvent(target,type,tme);
+        evnt.superlist = this;
+		// If 0 -> arrival event
+        if(type == 0)
+		{
+			data.arrivalTimes(tme);
+			data.arrivalCounter++;
+		}
+        else if(type == 1)
+		{
+			data.departureTimes(tme);
+			data.departureCounter++;
+		}
 		// Now it is examened where the event has to be inserted in the list
 		for(int i=0;i<events.size();i++)
 		{

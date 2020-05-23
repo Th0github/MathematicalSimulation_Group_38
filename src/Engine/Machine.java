@@ -28,7 +28,9 @@ public class Machine implements CProcess, ProductAcceptor
 	private double[] processingTimes;
 	/** Processing time iterator */
 	private int procCnt;
-	
+	private DataClass data;
+	private TruncatedNormalDistribution servTimeCons = new TruncatedNormalDistribution(1.2, 35.0/60, 25.0/60);
+	private TruncatedNormalDistribution servTimeCorp = new TruncatedNormalDistribution(3.6, 1.2, 45.0/60);
 
 	/**
 	*	Constructor
@@ -38,8 +40,9 @@ public class Machine implements CProcess, ProductAcceptor
 	*	@param e	Eventlist that will manage events
 	*	@param n	The name of the machine
 	*/
-	public Machine(Queue q, ProductAcceptor s, CEventList e, String n)
+	public Machine(Queue q, ProductAcceptor s, CEventList e, String n, DataClass data)
 	{
+		this.data = data;
 		status='i';
 		queue=q;
 		sink=s;
@@ -58,8 +61,9 @@ public class Machine implements CProcess, ProductAcceptor
 	*	@param n	The name of the machine
 	*   @param m	Mean processing time
 	*/
-	public Machine(Queue q, ProductAcceptor s, CEventList e, String n, double m)
+	public Machine(Queue q, ProductAcceptor s, CEventList e, String n, double m, DataClass data)
 	{
+		this.data = data;
 		status='i';
 		queue=q;
 		sink=s;
@@ -78,12 +82,14 @@ public class Machine implements CProcess, ProductAcceptor
 	*	@param n	The name of the machine
 	*   @param st	service times
 	*/
-	public Machine(Queue q, ProductAcceptor s, CEventList e, String n, double[] st)
+	public Machine(Queue q, ProductAcceptor s, CEventList e, String n, double[] st, DataClass data)
 	{
+		this.data = data;
 		status='i';
 		queue=q;
 		sink=s;
 		eventlist=e;
+		// name should indicate whether consumer or corporate
 		name=n;
 		meanProcTime=-1;
 		processingTimes=st;
@@ -144,10 +150,11 @@ public class Machine implements CProcess, ProductAcceptor
 		// generate duration
 		if(meanProcTime>0)
 		{
-			double duration = drawRandomExponential(meanProcTime);
+			double duration = getDuration(this.name);
+			data.durationTimes(duration);
 			// Create a new event in the eventlist
 			double tme = eventlist.getTime();
-			eventlist.add(this,0,tme+duration); //target,type,time
+			eventlist.add(this,1,tme+duration); //target,type,time
 			// set status to busy
 			status='b';
 		}
@@ -155,7 +162,7 @@ public class Machine implements CProcess, ProductAcceptor
 		{
 			if(processingTimes.length>procCnt)
 			{
-				eventlist.add(this,0,eventlist.getTime()+processingTimes[procCnt]); //target,type,time
+				eventlist.add(this,1,eventlist.getTime()+processingTimes[procCnt]); //target,type,time
 				// set status to busy
 				status='b';
 				procCnt++;
@@ -165,6 +172,27 @@ public class Machine implements CProcess, ProductAcceptor
 				eventlist.stop();
 			}
 		}
+	}
+
+	private double getDuration(String n) {
+		double d = 0;
+		if(n == "consumer")
+		{
+			d = servTimeCons.generate();
+		}
+		else if(n == "corporate")
+		{
+			d = servTimeCorp.generate();
+
+		}
+		else
+		{
+			// Shouldn't happen, failsafe for now
+			d = drawRandomExponential(meanProcTime);
+		}
+		data.durationTimes(d);
+		data.durationCounter++;
+		return d;
 	}
 
 	public static double drawRandomExponential(double mean)
