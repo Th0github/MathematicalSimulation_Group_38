@@ -2,6 +2,9 @@ package Engine;
 
 import Engine.CEventList;
 import Engine.CProcess;
+import distribution.TruncatedNormalDistribution;
+import rest.Consumer;
+import rest.Corporate;
 
 /**
  *	Engine.Machine in a factory
@@ -28,6 +31,8 @@ public class Machine implements CProcess, ProductAcceptor
 	private double[] processingTimes;
 	/** Processing time iterator */
 	private int procCnt;
+	private Corporate corporate = new Corporate();
+	private Consumer consumer = new Consumer();
 	
 
 	/**
@@ -126,7 +131,7 @@ public class Machine implements CProcess, ProductAcceptor
 			// mark starting time
 			product.stamp(eventlist.getTime(),"Production started",name);
 			// start production
-			startProduction();
+			startProduction(p);
 			// Flag that the product has arrived
 			return true;
 		}
@@ -139,12 +144,12 @@ public class Machine implements CProcess, ProductAcceptor
 	*	Start the handling of the current product with an exponentionally distributed processingtime with average 30
 	*	This time is placed in the eventlist
 	*/
-	private void startProduction()
+	private void startProduction(Product p)
 	{
 		// generate duration
 		if(meanProcTime>0)
 		{
-			double duration = drawRandomExponential(meanProcTime);
+			double duration = drawNormallyDistributedServTime(p.getType());
 			// Create a new event in the eventlist
 			double tme = eventlist.getTime();
 			eventlist.add(this,0,tme+duration); //target,type,time
@@ -167,12 +172,27 @@ public class Machine implements CProcess, ProductAcceptor
 		}
 	}
 
-	public static double drawRandomExponential(double mean)
+	/*
+		type 1 for corporate and type = 2 for consumer:
+		gives a truncate normal distributed service time.
+
+	 */
+	public double drawNormallyDistributedServTime(int type)
 	{
-		// draw a [0,1] uniform distributed number
-		double u = Math.random();
-		// Convert it into a exponentially distributed random variate with mean 33
-		double res = -mean*Math.log(u);
-		return res;
+		double callTime = 0;
+
+		if (type == 1){
+			TruncatedNormalDistribution servTimeCorp = new TruncatedNormalDistribution(corporate.AVERAGE_SERVICE_TIME, corporate.STANDARD_DEV_SERVICE_TIME, corporate.MIN_CALL_TIME);
+			callTime = servTimeCorp.generate();
+		}
+
+		else if (type ==  2){
+			TruncatedNormalDistribution servTimeCons = new TruncatedNormalDistribution(consumer.AVERAGE_SERVICE_TIME, consumer.STANDARD_DEV_SERVICE_TIME, consumer.MIN_CALL_TIME);
+			callTime = servTimeCons.generate();
+		}
+
+		else System.out.println("no type specified");
+
+		return callTime;
 	}
 }

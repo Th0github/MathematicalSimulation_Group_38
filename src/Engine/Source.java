@@ -21,6 +21,10 @@ public class Source implements CProcess
 	private double[] interarrivalTimes;
 	/** Interarrival time iterator */
 	private int interArrCnt;
+	/** Type of source (1 for corp and 2 for consumer */
+	private int type;
+
+
 
 	/**
 	*	Constructor, creates objects
@@ -40,19 +44,20 @@ public class Source implements CProcess
 	}
 
 	/**
-	*	Constructor, creates objects
-	*        Interarrival times are exponentially distributed with specified mean
+	*	Constructor, creates objects that follow a nonstationarty Poisson process that is sinusoid with
+	 *	an average rate of 2 per minute.
+	*
 	*	@param q	The receiver of the products
 	*	@param l	The eventlist that is requested to construct events
 	*	@param n	Name of object
-	*	@param m	Mean arrival time
+	*	@param t 	type of souce (1 for corporate and 2 for consumer
 	*/
-	public Source(ProductAcceptor q,CEventList l,String n,double m)
+	public Source(ProductAcceptor q,CEventList l,String n,int t)
 	{
 		list = l;
 		queue = q;
 		name = n;
-		meanArrTime=m;
+		type = t;
 		// put first event in list for initialization
 		list.add(this,0,drawRandomExponential(meanArrTime)); //target,type,time
 	}
@@ -83,7 +88,7 @@ public class Source implements CProcess
 		// show arrival
 		System.out.println("Arrival at time = " + tme);
 		// give arrived product to queue
-		Product p = new Product();
+		Product p = new Product(type);
 		p.stamp(tme,"Creation",name);
 		queue.giveProduct(p);
 		// generate duration

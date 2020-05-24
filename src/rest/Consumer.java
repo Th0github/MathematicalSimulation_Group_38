@@ -1,4 +1,4 @@
-import java.util.Random;
+package rest;
 
 /**
  * @author ohnoyes
@@ -53,7 +53,7 @@ public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
     }
 
     public String toString() {
-        return "Consumer ID: " + consumer_id + " was handled at lambda = " + getLambda();
+        return "rest.Consumer ID: " + consumer_id + " was handled at lambda = " + getLambda();
     }
 
     public void setIdle(boolean isIdle) {

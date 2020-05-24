@@ -1,3 +1,5 @@
+package rest;
+
 /**
  * @author ohnoyes
  */

@@ -1,4 +1,6 @@
+package distribution;
 import java.util.Random;
+
 
 /**
  * @author ohnoyes

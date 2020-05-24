@@ -1,5 +1,7 @@
-import java.util.ArrayList;
+package rest;
+
 import java.util.Random;
+import distribution.TruncatedNormalDistribution;
 
 public class Simulate {
     public static void main(String[] args) {
@@ -24,6 +26,10 @@ public class Simulate {
         PoissonProcess corporateArrivalSixToEight = new PoissonProcess(corporate.RATE_SIX_am_to_EIGHT_am, uniformVariate);
 
         System.out.println("Call recieved at first run: " + consumer.events());
+        System.out.println("Call recieved at first run " + consumerArrival.events());
+        System.out.println("Call recieved at first three am " + consumerArrivalThreeAM.events());
+        System.out.println("Call recieved at eight to six " + corporateArrivalEightToSix.events());
+        System.out.println("Call recieved at six to eight " + corporateArrivalSixToEight.events());
 
         //TODO: we need to link everything together, get the service linked with the serviceTime
         System.out.println("duration of call if consumer = " + servTimeCons.generate());
