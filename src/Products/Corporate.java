@@ -1,11 +1,12 @@
-package rest;
+package Products;
 
 /**
  * @author ohnoyes
  */
 public class Corporate extends PoissonProcess implements CustomerServiceAgent {
     //cost per hour
-    private final double COST = 60;
+    public final double COST = 60;
+    public final String AGENTTYPE = "corp";
 
     //Average rate of call per minute
     public final double RATE_EIGHT_am_to_SIX_pm = 1.0;
@@ -20,12 +21,7 @@ public class Corporate extends PoissonProcess implements CustomerServiceAgent {
     public final double STANDARD_DEV_SERVICE_TIME = 1.2;
     public final double MIN_CALL_TIME = 45.0/60;
 
-    //TODO: make this process not equal consumer corporate id.
-    private int corporate_id;
-
     public Corporate(){}
-
-    public Corporate(int corporate_id) {this.corporate_id = corporate_id; }
 
     @Override
     public boolean handle() {
@@ -35,11 +31,6 @@ public class Corporate extends PoissonProcess implements CustomerServiceAgent {
     @Override
     public double getLambda () {
         return super.getLambda();
-    }
-
-    @Override
-    public int getID() {
-        return corporate_id;
     }
 
     public String toString() {

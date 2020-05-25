@@ -1,10 +1,8 @@
 package Engine;
 
-import Engine.CEventList;
-import Engine.CProcess;
-import distribution.TruncatedNormalDistribution;
-import rest.Consumer;
-import rest.Corporate;
+import Distribution.TruncatedNormalDistribution;
+import Products.Consumer;
+import Products.Corporate;
 
 /**
  *	Engine.Machine in a factory
@@ -25,55 +23,35 @@ public class Machine implements CProcess, ProductAcceptor
 	private char status;
 	/** Engine.Machine name */
 	private final String name;
-	/** Mean processing time */
-	private double meanProcTime;
 	/** Processing times (in case pre-specified) */
 	private double[] processingTimes;
 	/** Processing time iterator */
 	private int procCnt;
-	private Corporate corporate = new Corporate();
-	private Consumer consumer = new Consumer();
+	public String agentType;
+	private static Corporate corporate = new Corporate();
+	private static Consumer consumer = new Consumer();
 	
 
 	/**
 	*	Constructor
-	*        Service times are exponentially distributed with mean 30
+	*        service times are normally distributed and handled in the start production method
 	*	@param q	Engine.Queue from which the machine has to take products
 	*	@param s	Where to send the completed products
 	*	@param e	Eventlist that will manage events
 	*	@param n	The name of the machine
 	*/
-	public Machine(Queue q, ProductAcceptor s, CEventList e, String n)
+	public Machine(Queue q, ProductAcceptor s, CEventList e, String n, String agentType)
 	{
 		status='i';
 		queue=q;
 		sink=s;
 		eventlist=e;
 		name=n;
-		meanProcTime=30;
+		this.agentType = agentType;
 		queue.askProduct(this);
 	}
 
-	/**
-	*	Constructor
-	*        Service times are exponentially distributed with specified mean
-	*	@param q	Engine.Queue from which the machine has to take products
-	*	@param s	Where to send the completed products
-	*	@param e	Eventlist that will manage events
-	*	@param n	The name of the machine
-	*        @param m	Mean processing time
-	*/
-	public Machine(Queue q, ProductAcceptor s, CEventList e, String n, double m)
-	{
-		status='i';
-		queue=q;
-		sink=s;
-		eventlist=e;
-		name=n;
-		meanProcTime=m;
-		queue.askProduct(this);
-	}
-	
+
 	/**
 	*	Constructor
 	*        Service times are pre-specified
@@ -90,7 +68,6 @@ public class Machine implements CProcess, ProductAcceptor
 		sink=s;
 		eventlist=e;
 		name=n;
-		meanProcTime=-1;
 		processingTimes=st;
 		procCnt=0;
 		queue.askProduct(this);
@@ -147,29 +124,12 @@ public class Machine implements CProcess, ProductAcceptor
 	private void startProduction(Product p)
 	{
 		// generate duration
-		if(meanProcTime>0)
-		{
-			double duration = drawNormallyDistributedServTime(p.getType());
-			// Create a new event in the eventlist
-			double tme = eventlist.getTime();
-			eventlist.add(this,0,tme+duration); //target,type,time
-			// set status to busy
-			status='b';
-		}
-		else
-		{
-			if(processingTimes.length>procCnt)
-			{
-				eventlist.add(this,0,eventlist.getTime()+processingTimes[procCnt]); //target,type,time
-				// set status to busy
-				status='b';
-				procCnt++;
-			}
-			else
-			{
-				eventlist.stop();
-			}
-		}
+		double duration = drawNormallyDistributedServTime(p.getType());
+		// Create a new event in the eventlist
+		double tme = eventlist.getTime();
+		eventlist.add(this,1,tme+duration); //target,type,time
+		// set status to busy
+		status='b';
 	}
 
 	/*
@@ -177,16 +137,16 @@ public class Machine implements CProcess, ProductAcceptor
 		gives a truncate normal distributed service time.
 
 	 */
-	public double drawNormallyDistributedServTime(int type)
+	public double drawNormallyDistributedServTime(String type)
 	{
 		double callTime = 0;
 
-		if (type == 1){
+		if (type == corporate.AGENTTYPE){
 			TruncatedNormalDistribution servTimeCorp = new TruncatedNormalDistribution(corporate.AVERAGE_SERVICE_TIME, corporate.STANDARD_DEV_SERVICE_TIME, corporate.MIN_CALL_TIME);
 			callTime = servTimeCorp.generate();
 		}
 
-		else if (type ==  2){
+		else if (type == consumer.AGENTTYPE){
 			TruncatedNormalDistribution servTimeCons = new TruncatedNormalDistribution(consumer.AVERAGE_SERVICE_TIME, consumer.STANDARD_DEV_SERVICE_TIME, consumer.MIN_CALL_TIME);
 			callTime = servTimeCons.generate();
 		}

@@ -1,5 +1,8 @@
 package Engine;
 
+import Products.PoissonProcess;
+import Products.Consumer;
+import Products.Corporate;
 /**
  *	A source of products
  *	This class implements Engine.CProcess so that it can execute events.
@@ -22,27 +25,11 @@ public class Source implements CProcess
 	/** Interarrival time iterator */
 	private int interArrCnt;
 	/** Type of source (1 for corp and 2 for consumer */
-	private int type;
-
-
-
-	/**
-	*	Constructor, creates objects
-	*        Interarrival times are exponentially distributed with mean 33
-	*	@param q	The receiver of the products
-	*	@param l	The eventlist that is requested to construct events
-	*	@param n	Name of object
-	*/
-	public Source(ProductAcceptor q,CEventList l,String n)
-	{
-		list = l;
-		queue = q;
-		name = n;
-		meanArrTime=33;
-		// put first event in list for initialization
-		list.add(this,0,drawRandomExponential(meanArrTime)); //target,type,time
-	}
-
+	private String agentType;
+	/** Poisson process according to the source type*/
+	private PoissonProcess pois, pois2;
+	private Consumer consumer = new Consumer();
+	private Corporate corporate = new Corporate();
 	/**
 	*	Constructor, creates objects that follow a nonstationarty Poisson process that is sinusoid with
 	 *	an average rate of 2 per minute.
@@ -51,15 +38,27 @@ public class Source implements CProcess
 	*	@param l	The eventlist that is requested to construct events
 	*	@param n	Name of object
 	*	@param t 	type of souce (1 for corporate and 2 for consumer
+	 *
 	*/
-	public Source(ProductAcceptor q,CEventList l,String n,int t)
+	public Source(ProductAcceptor q,CEventList l,String n, String t)
 	{
 		list = l;
 		queue = q;
 		name = n;
-		type = t;
+		this.agentType = t;
+		if(t == corporate.AGENTTYPE)
+		{
+			this.pois = new PoissonProcess(corporate.RATE_EIGHT_am_to_SIX_pm);
+			this.pois2 = new PoissonProcess(corporate.RATE_SIX_am_to_EIGHT_am);
+		}
+		else if(t == consumer.AGENTTYPE)
+		{
+			this.pois = new PoissonProcess(consumer.AVERAGE_RATE_PER_MINUTE);
+			this.pois2 = new PoissonProcess(consumer.AVERAGE_RATE_PER_MINUTE_3_AM);
+		}
+
 		// put first event in list for initialization
-		list.add(this,0,drawRandomExponential(meanArrTime)); //target,type,time
+		list.add(this,0, pois.timeNextEvent());
 	}
 
 	/**
@@ -85,39 +84,33 @@ public class Source implements CProcess
         @Override
 	public void execute(int type, double tme)
 	{
+		double arrival = 0;
 		// show arrival
-		System.out.println("Arrival at time = " + tme);
+		System.out.println("Arrival at time = " + tme + "\t\t Source: " + this.name);
 		// give arrived product to queue
-		Product p = new Product(type);
+		Product p = new Product(this.agentType);
 		p.stamp(tme,"Creation",name);
 		queue.giveProduct(p);
-		// generate duration
-		if(meanArrTime>0)
+
+		// generate time of next event
+		if(this.agentType == corporate.AGENTTYPE)
 		{
-			double duration = drawRandomExponential(meanArrTime);
-			// Create a new event in the eventlist
-			list.add(this,0,tme+duration); //target,type,time
+			if(list.getTime() < 0){ //TODO change into correct time
+				arrival = pois2.timeNextEvent();
+			}
+			else arrival = pois.timeNextEvent();
 		}
-		else
+
+		else if(this.agentType == consumer.AGENTTYPE)
 		{
-			interArrCnt++;
-			if(interarrivalTimes.length>interArrCnt)
-			{
-				list.add(this,0,tme+interarrivalTimes[interArrCnt]); //target,type,time
+			if (list.getTime() < 0) { //TODO change into correct time
+				arrival = pois2.timeNextEvent();
 			}
-			else
-			{
-				list.stop();
-			}
+			else arrival = pois.timeNextEvent();
 		}
-	}
-	
-	public static double drawRandomExponential(double mean)
-	{
-		// draw a [0,1] uniform distributed number
-		double u = Math.random();
-		// Convert it into a exponentially distributed random variate with mean 33
-		double res = -mean*Math.log(u);
-		return res;
+
+		// Create a new event in the eventlist
+		list.add(this,0, arrival+tme); //target,type,time
+
 	}
 }

@@ -12,14 +12,14 @@ class Product
 	private ArrayList<Double> times;
 	private ArrayList<String> events;
 	private ArrayList<String> stations;
-	private int type;
+	private String type;
 	
 	/** 
 	*	Constructor for the product
 	*	Mark the time at which it is created
 	*	@param create The current time
 	*/
-	public Product(int type)
+	public Product(String type)
 	{
 		this.times = new ArrayList<>();
 		this.events = new ArrayList<>();
@@ -75,7 +75,7 @@ class Product
 		return tmp;
 	}
 
-	public int getType()
+	public String getType()
 	{
 		return this.type;
 	}

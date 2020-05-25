@@ -1,7 +1,8 @@
 package Engine;
 
 import java.util.ArrayList;
-
+import Products.Corporate;
+import Products.Consumer;
 /**
  *	Engine.Queue that stores products until they can be handled on a machine machine
  *	@author Joel Karel
@@ -10,17 +11,20 @@ import java.util.ArrayList;
 public class Queue implements ProductAcceptor
 {
 	/** List in which the products are kept */
-	private ArrayList<Product> row;
+	private ArrayList<Product> rowCorp;
+	private ArrayList<Product> rowCons;
 	/** Requests from machine that will be handling the products */
 	private ArrayList<Machine> requests;
-	
+	private Consumer consumer = new Consumer();
+	private Corporate corporate = new Corporate();
 	/**
 	*	Initializes the queue and introduces a dummy machine
 	*	the machine has to be specified later
 	*/
 	public Queue()
 	{
-		row = new ArrayList<>();
+		rowCorp = new ArrayList<>();
+		rowCons = new ArrayList<>();
 		requests = new ArrayList<>();
 	}
 	
@@ -30,23 +34,62 @@ public class Queue implements ProductAcceptor
 	*/
 	public boolean askProduct(Machine machine)
 	{
-		// This is only possible with a non-empty queue
-		if(row.size()>0)
+		if(machine.agentType == corporate.AGENTTYPE)
 		{
-			// If the machine accepts the product
-			if(machine.giveProduct(row.get(0)))
+			// This is only possible with a non-empty queue
+			if(rowCorp.size()>0)
 			{
-				row.remove(0);// Remove it from the queue
-				return true;
+				// If the machine accepts the product
+				if(machine.giveProduct(rowCorp.get(0)))
+				{
+					rowCorp.remove(0);// Remove it from the queue
+					return true;
+				}
+				else
+					return false; // Engine.Machine rejected; don't queue request
+			}
+			else if(rowCons.size()>0)
+			{
+				// This is only possible with a non-empty queue
+				if(rowCons.size()>0)
+				{
+					// If the machine accepts the product
+					if(machine.giveProduct(rowCons.get(0)))
+					{
+						rowCons.remove(0);// Remove it from the queue
+						return true;
+					}
+					else
+						return false; // Engine.Machine rejected; don't queue request
+				}
 			}
 			else
-				return false; // Engine.Machine rejected; don't queue request
+			{
+				requests.add(machine);
+				return false; // queue request
+			}
 		}
-		else
+		else if(machine.agentType == consumer.AGENTTYPE)
 		{
-			requests.add(machine);
-			return false; // queue request
+			// This is only possible with a non-empty queue
+			if(rowCons.size()>0)
+			{
+				// If the machine accepts the product
+				if(machine.giveProduct(rowCons.get(0)))
+				{
+					rowCons.remove(0);// Remove it from the queue
+					return true;
+				}
+				else
+					return false; // Engine.Machine rejected; don't queue request
+			}
+			else
+			{
+				requests.add(machine);
+				return false; // queue request
+			}
 		}
+		return false;
 	}
 	
 	/**
@@ -57,7 +100,15 @@ public class Queue implements ProductAcceptor
 	{
 		// Check if the machine accepts it
 		if(requests.size()<1)
-			row.add(p); // Otherwise store it
+			if(p.getType() == corporate.AGENTTYPE)
+			{
+				rowCorp.add(p); // Otherwise store it
+			}
+			else if(p.getType() == consumer.AGENTTYPE)
+			{
+				rowCons.add(p); // Otherwise store it
+			}
+
 		else
 		{
 			boolean delivered = false;
@@ -68,7 +119,16 @@ public class Queue implements ProductAcceptor
 				requests.remove(0);
 			}
 			if(!delivered)
-				row.add(p); // Otherwise store it
+				if(p.getType() == corporate.AGENTTYPE)
+				{
+					rowCorp.add(p); // Otherwise store it
+				}
+				else if(p.getType() == consumer.AGENTTYPE)
+				{
+					rowCons.add(p); // Otherwise store it
+				}
+
+				// Joels code row.add(p); // Otherwise store it
 		}
 		return true;
 	}

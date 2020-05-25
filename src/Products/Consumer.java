@@ -1,11 +1,12 @@
-package rest;
+package Products;
 
 /**
  * @author ohnoyes
  */
-public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
+public class Consumer extends PoissonProcess implements CustomerServiceAgent {
     //cost per hour
-    private final double COST = 35;
+    public final double COST = 35;
+    public final String AGENTTYPE = "cons";
 
     private int consumer_id;
 
@@ -27,10 +28,6 @@ public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
     /**
      * Initialize consumer
      */
-    public Consumer(int consumer_id) {
-        this.consumer_id = consumer_id;
-    }
-
     public Consumer() {}
 
     /**
@@ -47,13 +44,8 @@ public class Consumer extends PoissonProcess implements CustomerServiceAgent  {
         return super.getLambda();
     }
 
-    @Override
-    public int getID() {
-        return consumer_id;
-    }
-
     public String toString() {
-        return "rest.Consumer ID: " + consumer_id + " was handled at lambda = " + getLambda();
+        return "Products.Consumer ID: " + consumer_id + " was handled at lambda = " + getLambda();
     }
 
     public void setIdle(boolean isIdle) {

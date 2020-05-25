@@ -1,4 +1,4 @@
-package rest;
+package Products;
 
 import java.util.Random;
 
@@ -6,7 +6,7 @@ public class PoissonEventTester {
     public static void main(String[] args) {
         double lambda = 2;
         double sampleCount = 10;
-        PoissonProcess pois = new PoissonProcess(lambda, new Random());
+        PoissonProcess pois = new PoissonProcess(lambda);
 
         for(int i = 1; i <= sampleCount; i++) {
             double p = pois.events();

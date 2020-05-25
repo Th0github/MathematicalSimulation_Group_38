@@ -1,4 +1,4 @@
-package rest;
+package Products;
 
 import java.util.Random;
 
@@ -10,9 +10,9 @@ public class PoissonProcess {
      * @param lambda is rate
      * @param rand util.Random that uses LCG from: assignment 1
      */
-    public PoissonProcess(double lambda, Random rand) {
+    public PoissonProcess(double lambda) {
         this.lambda = lambda;
-        this.rand = rand;
+        rand = new Random();
     }
 
     /**
@@ -44,7 +44,7 @@ public class PoissonProcess {
      * @return random inter-arrival time
      */
     public double timeNextEvent() {
-        return - Math.log(1.0 - rand.nextDouble()) / lambda;
+        return -Math.log(1.0 - rand.nextDouble()) / lambda;
     }
 
     /**

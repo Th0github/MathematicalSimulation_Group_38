@@ -1,4 +1,4 @@
-package distribution;
+package Distribution;
 import java.util.Random;
 
 
@@ -16,13 +16,15 @@ public class TruncatedNormalDistribution {
     private Random rand = new Random();
 
     // insert the correct mean, standard deviation and minimum
-    public TruncatedNormalDistribution(double avTime, double stDev, double minimum){
+    public TruncatedNormalDistribution(double avTime, double stDev, double minimum)
+    {
         this.averageTime = avTime;
         this.standardDeviation = stDev;
         this.truncMin = minimum;
     }
 
-    public double generate(){
+    public double generate()
+    {
         double callTime;
         double avT = this.averageTime;
         double std = this.standardDeviation;
