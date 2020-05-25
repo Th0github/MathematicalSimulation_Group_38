@@ -92,10 +92,10 @@ public class Source implements CProcess
 		p.stamp(tme,"Creation",name);
 		queue.giveProduct(p);
 
-		// generate time of next event
+		// generate time of next event keeping in mind the different in rates correlated with defined time instances
 		if(this.agentType == corporate.AGENTTYPE)
 		{
-			if(list.getTime() < 0){ //TODO change into correct time
+			if(list.getDayTime() < 120 || list.getDayTime() > 1080){
 				arrival = pois2.timeNextEvent();
 			}
 			else arrival = pois.timeNextEvent();
@@ -103,7 +103,7 @@ public class Source implements CProcess
 
 		else if(this.agentType == consumer.AGENTTYPE)
 		{
-			if (list.getTime() < 0) { //TODO change into correct time
+			if (list.getDayTime() > 1260  && list.getDayTime() < 1320) {
 				arrival = pois2.timeNextEvent();
 			}
 			else arrival = pois.timeNextEvent();

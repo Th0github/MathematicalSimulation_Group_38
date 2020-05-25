@@ -114,6 +114,10 @@ public class CEventList implements CProcess
 	{
 		return currentTime;
 	}
+
+	public double getDayTime(){
+		return (currentTime%1440);
+	}
 	
 	/**
 	*	Method to have this object process an event
