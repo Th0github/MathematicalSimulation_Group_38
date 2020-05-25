@@ -45,8 +45,6 @@ public class Queue implements ProductAcceptor
 					rowCorp.remove(0);// Remove it from the queue
 					return true;
 				}
-				else
-					return false; // Engine.Machine rejected; don't queue request
 			}
 			else if(rowCons.size()>0)
 			{
@@ -77,6 +75,9 @@ public class Queue implements ProductAcceptor
 				// If the machine accepts the product
 				if(machine.giveProduct(rowCons.get(0)))
 				{
+					if (rowCons.isEmpty()){
+						System.out.println("lol");
+					}
 					rowCons.remove(0);// Remove it from the queue
 					return true;
 				}
@@ -89,6 +90,7 @@ public class Queue implements ProductAcceptor
 				return false; // queue request
 			}
 		}
+
 		return false;
 	}
 	
@@ -99,7 +101,7 @@ public class Queue implements ProductAcceptor
 	public boolean giveProduct(Product p)
 	{
 		// Check if the machine accepts it
-		if(requests.size()<1) {
+		if(requests.size()<1 ) {
 			if (p.getType() == corporate.AGENTTYPE) {
 				rowCorp.add(p); // Otherwise store it
 			} else if (p.getType() == consumer.AGENTTYPE) {
@@ -127,5 +129,9 @@ public class Queue implements ProductAcceptor
 				}
 		}
 		return true;
+	}
+
+	public void removeFromRequests(Machine machine){
+		requests.remove(machine);
 	}
 }

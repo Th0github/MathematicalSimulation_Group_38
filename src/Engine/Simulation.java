@@ -22,7 +22,7 @@ public class Simulation {
     private static Corporate corporate = new Corporate();
     private static Consumer consumer = new Consumer();
     private static ArrayList<Machine> shift1, shift2, shift3;
-    private static final int NUMBEROFDAYS = 1;
+    private static final int NUMBEROFDAYS = 7;
 	
 
     /**
@@ -48,62 +48,27 @@ public class Simulation {
         Sink si1 = new Sink("Corporate Customers Sink");
 
         // create the roster and the respective machines
-        int cost = createRoster(1,1,1,2,2,1,q1,si1,l);
+        Roster roster = new Roster(q1, si1, l);
+
+        //find the best strategy by trial and error for the lowest people possible
+        int cost = roster.createRoster(5,5,5,5,4,4);
+        l.setRoster(roster);
 
         // start the eventlist
-        l.start(1440*NUMBEROFDAYS); //maximum time
+        l.start(1440); //maximum time
 
         int totalCustomers = s1.getTotalProducts() + s2.getTotalProducts();
+        int totalHandled = si1.getNumber();
         System.out.println();
         System.out.println("--------------------------");
         System.out.println("total customers: " + totalCustomers);
+        System.out.println("total handled: " + totalHandled);
+        System.out.println("difference = " + (totalCustomers-totalHandled));
         System.out.println("--------------------------");
         showStats(si1, totalCustomers);
 
-
-
-
     }
 
-    public static int createRoster(int consumerShift1, int consumerShift2, int consumerShift3, int corporateShift1, int corporateShift2, int corporateShift3, Queue q1, Sink si1, CEventList l)
-    {
-        int shiftDuration = 8;
-        int consumerCost = 35;
-        int corporateCost = 60;
-
-        shift1 = new ArrayList<>();
-        shift2 = new ArrayList<>();
-        shift3 = new ArrayList<>();
-
-        for( int i = 0; i<consumerShift1; i++)
-        {
-            shift1.add(new Machine(q1,si1,l, "CSACons station shift1-"+(i+1), consumer.AGENTTYPE));
-        }
-        for( int i = 0; i<consumerShift2; i++)
-        {
-            shift2.add(new Machine(q1,si1,l, "CSACons station shift2-"+(i+1), consumer.AGENTTYPE));
-        }
-        for( int i = 0; i<consumerShift3; i++)
-        {
-            shift3.add(new Machine(q1,si1,l, "CSACons station shift3-"+(i+1), consumer.AGENTTYPE));
-        }
-        for( int i = 0; i<corporateShift1; i++)
-        {
-            shift1.add(new Machine(q1,si1,l,"CSACorp station shift1-"+(i+1), corporate.AGENTTYPE));
-        }
-        for( int i = 0; i<corporateShift2; i++)
-        {
-            shift2.add(new Machine(q1,si1,l,"CSACorp station shift2-"+(i+1), corporate.AGENTTYPE));
-        }
-        for( int i = 0; i<corporateShift3; i++)
-        {
-            shift3.add(new Machine(q1,si1,l,"CSACorp station shift3-"+(i+1), corporate.AGENTTYPE));
-        }
-
-        int cost = consumerCost*(consumerShift1+consumerShift2+consumerShift3)*shiftDuration + corporateCost*(corporateShift1+corporateShift2+corporateShift3)*shiftDuration;
-
-        return cost;
-    }
 
     public static void showStats(Sink si1, int totalCustomers) {
 
@@ -132,10 +97,11 @@ public class Simulation {
             }
         }
 
-        double percentageCorp3 = (1 - (double) waitTimeCorp3 / totalCustomers) * 100;
-        double percentageCorp7 = (1 - (double) waitTimeCorp7 / totalCustomers) * 100;
-        double percentageCons5 = (1 - (double) waitTimeCons5 / totalCustomers) * 100;
-        double percentageCons10 = (1 - (double) waitTimeCons10 / totalCustomers) * 100;
+        //todo change the division
+        double percentageCorp3 = (1 - (double)waitTimeCorp3 / waitingTimesCorp.length) * 100 ;
+        double percentageCorp7 = (1 - (double) waitTimeCorp7 / waitingTimesCorp.length) * 100;
+        double percentageCons5 = (1 - (double) waitTimeCons5 / waitingTimesCons.length) * 100;
+        double percentageCons10 = (1 - (double) waitTimeCons10 / waitingTimesCons.length) * 100;
 
         System.out.println("");
         System.out.println();

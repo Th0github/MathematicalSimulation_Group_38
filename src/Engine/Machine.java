@@ -30,7 +30,7 @@ public class Machine implements CProcess, ProductAcceptor
 	public String agentType;
 	private static Corporate corporate = new Corporate();
 	private static Consumer consumer = new Consumer();
-	
+	public boolean active;
 
 	/**
 	*	Constructor
@@ -42,6 +42,7 @@ public class Machine implements CProcess, ProductAcceptor
 	*/
 	public Machine(Queue q, ProductAcceptor s, CEventList e, String n, String agentType)
 	{
+		active = true;
 		status='i';
 		queue=q;
 		sink=s;
@@ -49,28 +50,7 @@ public class Machine implements CProcess, ProductAcceptor
 		name=n;
 		this.agentType = agentType;
 		queue.askProduct(this);
-	}
 
-
-	/**
-	*	Constructor
-	*        Service times are pre-specified
-	*	@param q	Engine.Queue from which the machine has to take products
-	*	@param s	Where to send the completed products
-	*	@param e	Eventlist that will manage events
-	*	@param n	The name of the machine
-	*        @param st	service times
-	*/
-	public Machine(Queue q, ProductAcceptor s, CEventList e, String n, double[] st)
-	{
-		status='i';
-		queue=q;
-		sink=s;
-		eventlist=e;
-		name=n;
-		processingTimes=st;
-		procCnt=0;
-		queue.askProduct(this);
 	}
 
 	/**
@@ -89,7 +69,11 @@ public class Machine implements CProcess, ProductAcceptor
 		// set machine status to idle
 		status='i';
 		// Ask the queue for products
-		queue.askProduct(this);
+		if(active){
+			queue.askProduct(this);
+		}
+
+
 	}
 	
 	/**
@@ -100,13 +84,13 @@ public class Machine implements CProcess, ProductAcceptor
         @Override
 	public boolean giveProduct(Product p)
 	{
+
 		// Only accept something if the machine is idle
-		if(status=='i')
-		{
+		if (status == 'i') {
 			// accept the product
-			product=p;
+			product = p;
 			// mark starting time
-			product.stamp(eventlist.getTime(),"Production started",name);
+			product.stamp(eventlist.getTime(), "Production started", name);
 			// start production
 			startProduction(p);
 			// Flag that the product has arrived
@@ -114,6 +98,7 @@ public class Machine implements CProcess, ProductAcceptor
 		}
 		// Flag that the product has been rejected
 		else return false;
+
 	}
 	
 	/**
@@ -154,5 +139,11 @@ public class Machine implements CProcess, ProductAcceptor
 		else System.out.println("no type specified");
 
 		return callTime;
+	}
+
+	public void setInactive()
+	{
+		active = false;
+		queue.removeFromRequests(this);
 	}
 }

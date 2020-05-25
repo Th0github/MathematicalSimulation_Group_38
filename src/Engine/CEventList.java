@@ -44,10 +44,6 @@ public class CEventList implements CProcess
 		// First create a new event using the parameters
 		CEvent evnt;
                 evnt = new CEvent(target,type,tme);
-        if(type == 0)
-		{
-
-		}
 		// Now it is examened where the event has to be inserted in the list
 		for(int i=0;i<events.size();i++)
 		{
@@ -119,6 +115,7 @@ public class CEventList implements CProcess
 	*/
 	public double getTime()
 	{
+		rosterMaker.executeRoster();
 		return currentTime;
 	}
 
@@ -137,5 +134,10 @@ public class CEventList implements CProcess
 	{
 		if(type==-1)
 			stop();
+	}
+
+	public void setRoster(Roster roster)
+	{
+		this.rosterMaker = roster;
 	}
 }
