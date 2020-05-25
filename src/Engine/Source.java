@@ -30,6 +30,7 @@ public class Source implements CProcess
 	private PoissonProcess pois, pois2;
 	private Consumer consumer = new Consumer();
 	private Corporate corporate = new Corporate();
+	private int totalProducts;
 	/**
 	*	Constructor, creates objects that follow a nonstationarty Poisson process that is sinusoid with
 	 *	an average rate of 2 per minute.
@@ -46,6 +47,8 @@ public class Source implements CProcess
 		queue = q;
 		name = n;
 		this.agentType = t;
+		this.totalProducts = 0;
+
 		if(t == corporate.AGENTTYPE)
 		{
 			this.pois = new PoissonProcess(corporate.RATE_EIGHT_am_to_SIX_pm);
@@ -91,6 +94,8 @@ public class Source implements CProcess
 		Product p = new Product(this.agentType);
 		p.stamp(tme,"Creation",name);
 		queue.giveProduct(p);
+		// add to the total products list
+		totalProducts++;
 
 		// generate time of next event keeping in mind the different in rates correlated with defined time instances
 		if(this.agentType == corporate.AGENTTYPE)
@@ -112,5 +117,10 @@ public class Source implements CProcess
 		// Create a new event in the eventlist
 		list.add(this,0, arrival+tme); //target,type,time
 
+
+	}
+
+	public int getTotalProducts(){
+		return this.totalProducts;
 	}
 }

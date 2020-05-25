@@ -99,15 +99,13 @@ public class Queue implements ProductAcceptor
 	public boolean giveProduct(Product p)
 	{
 		// Check if the machine accepts it
-		if(requests.size()<1)
-			if(p.getType() == corporate.AGENTTYPE)
-			{
+		if(requests.size()<1) {
+			if (p.getType() == corporate.AGENTTYPE) {
 				rowCorp.add(p); // Otherwise store it
-			}
-			else if(p.getType() == consumer.AGENTTYPE)
-			{
+			} else if (p.getType() == consumer.AGENTTYPE) {
 				rowCons.add(p); // Otherwise store it
 			}
+		}
 
 		else
 		{
@@ -127,8 +125,6 @@ public class Queue implements ProductAcceptor
 				{
 					rowCons.add(p); // Otherwise store it
 				}
-
-				// Joels code row.add(p); // Otherwise store it
 		}
 		return true;
 	}

@@ -81,7 +81,7 @@ public class Machine implements CProcess, ProductAcceptor
 	public void execute(int type, double tme)
 	{
 		// show arrival
-		System.out.println("Product finished at time = " + tme);
+		System.out.println("Product finished at time = " + tme + "\t at machine: " + this.name);
 		// Remove product from system
 		product.stamp(tme,"Production complete",name);
 		sink.giveProduct(product);

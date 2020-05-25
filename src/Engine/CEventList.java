@@ -9,6 +9,7 @@ import java.util.ArrayList;
  *	@author Joel Karel
  *	@version %I%, %G%
  */
+
 public class CEventList implements CProcess
 {
 	/** The time in the simulation */
@@ -17,13 +18,15 @@ public class CEventList implements CProcess
 	private final ArrayList<CEvent> events;
 	/** Stop flag */
 	private boolean stopFlag;
-
+	private int currentShift;
+	private Roster rosterMaker;
 	/**
 	*	Standard constructor
 	*	Create an Engine.CEventList object
 	*/
 	public CEventList()
 	{
+		currentShift = 1;
 		currentTime = 0;
 		stopFlag = false;
 		events = new ArrayList<>();
@@ -41,6 +44,10 @@ public class CEventList implements CProcess
 		// First create a new event using the parameters
 		CEvent evnt;
                 evnt = new CEvent(target,type,tme);
+        if(type == 0)
+		{
+
+		}
 		// Now it is examened where the event has to be inserted in the list
 		for(int i=0;i<events.size();i++)
 		{
@@ -115,7 +122,8 @@ public class CEventList implements CProcess
 		return currentTime;
 	}
 
-	public double getDayTime(){
+	public double getDayTime()
+	{
 		return (currentTime%1440);
 	}
 	

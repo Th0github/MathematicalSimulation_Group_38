@@ -1,6 +1,8 @@
 package Engine;
 
 import java.util.ArrayList;
+import Products.Corporate;
+import Products.Consumer;
 /**
  *	A sink
  *	@author Joel Karel
@@ -15,10 +17,15 @@ public class Sink implements ProductAcceptor
 	private ArrayList<Double> times;
 	private ArrayList<String> events;
 	private ArrayList<String> stations;
+	private ArrayList<Double> waitingTimeCorp;
+	private ArrayList<Double> waitingTimeCons;
 	/** Counter to number products */
 	private int number;
 	/** Name of the sink */
 	private String name;
+	private Corporate corporate;
+	private Consumer consumer;
+
 	
 	/**
 	*	Constructor, creates objects
@@ -32,6 +39,10 @@ public class Sink implements ProductAcceptor
 		events = new ArrayList<>();
 		stations = new ArrayList<>();
 		number = 0;
+		corporate = new Corporate();
+		consumer = new Consumer();
+		waitingTimeCorp = new ArrayList<>();
+		waitingTimeCons = new ArrayList<>();
 	}
 	
         @Override
@@ -43,12 +54,22 @@ public class Sink implements ProductAcceptor
 		ArrayList<Double> t = p.getTimes();
 		ArrayList<String> e = p.getEvents();
 		ArrayList<String> s = p.getStations();
+
 		for(int i=0;i<t.size();i++)
 		{
 			numbers.add(number);
 			times.add(t.get(i));
 			events.add(e.get(i));
 			stations.add(s.get(i));
+		}
+
+		double[] times = p.getTimesAsArray();
+		double waitTime = times[1] - times[0];
+		if(p.getType() == corporate.AGENTTYPE){
+			waitingTimeCorp.add(waitTime);
+		}
+		else if (p.getType() == consumer.AGENTTYPE){
+			waitingTimeCons.add(waitTime);
 		}
 		return true;
 	}
@@ -88,4 +109,30 @@ public class Sink implements ProductAcceptor
 		tmp = stations.toArray(tmp);
 		return tmp;
 	}
+
+	public int getNumber(){
+		return number;
+	}
+
+	public double[] getWaitingTimeCorp(){
+		waitingTimeCorp.trimToSize();
+		double[] tmp = new double[waitingTimeCorp.size()];
+		for (int i=0; i < waitingTimeCorp.size(); i++)
+		{
+			tmp[i] = (waitingTimeCorp.get(i)).doubleValue();
+		}
+		return tmp;
+	}
+
+	public double[] getWaitingTimeCons(){
+		waitingTimeCons.trimToSize();
+		double[] tmp = new double[waitingTimeCons.size()];
+		for (int i=0; i < waitingTimeCons.size(); i++)
+		{
+			tmp[i] = (waitingTimeCons.get(i)).doubleValue();
+		}
+		return tmp;
+	}
+
+
 }
