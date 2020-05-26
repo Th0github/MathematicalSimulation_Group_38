@@ -61,7 +61,7 @@ public class Roster {
             for(Machine agent:activeAgents)
             {
                 if(agent.active == true) {
-                    System.out.println("this agent is now inactve + " + agent.getName());
+                    System.out.println("this agent is now inactve: " + agent.getName());
                     agent.setInactive();
                 }
             }

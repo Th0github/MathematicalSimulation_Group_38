@@ -54,7 +54,7 @@ public class Simulation {
         l.setRoster(roster);
 
         // start the eventlist
-        l.start(1440*1); //maximum time
+        l.start(1440*NUMBEROFDAYS); //maximum time
 
         int totalCustomers = s1.getTotalProducts() + s2.getTotalProducts();
         int totalHandled = si1.getNumber();
