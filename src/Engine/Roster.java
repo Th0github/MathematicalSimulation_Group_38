@@ -60,8 +60,10 @@ public class Roster {
         {
             for(Machine agent:activeAgents)
             {
-                System.out.println("this agent is now inactve");
-                agent.setInactive();
+                if(agent.active == true) {
+                    System.out.println("this agent is now inactve + " + agent.getName());
+                    agent.setInactive();
+                }
             }
         }
         for(int i = 0; i<consShift; i++)

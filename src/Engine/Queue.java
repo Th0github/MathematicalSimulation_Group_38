@@ -40,7 +40,7 @@ public class Queue implements ProductAcceptor
 			if(rowCorp.size()>0)
 			{
 				// If the machine accepts the product
-				if(machine.giveProduct(rowCorp.get(0)))
+				if(machine.giveProduct(rowCorp.get(0)) && !rowCorp.isEmpty())
 				{
 					rowCorp.remove(0);// Remove it from the queue
 					return true;
@@ -52,7 +52,7 @@ public class Queue implements ProductAcceptor
 				if(rowCons.size()>0)
 				{
 					// If the machine accepts the product
-					if(machine.giveProduct(rowCons.get(0)))
+					if(machine.giveProduct(rowCons.get(0)) && !rowCons.isEmpty())
 					{
 						rowCons.remove(0);// Remove it from the queue
 						return true;
@@ -73,11 +73,8 @@ public class Queue implements ProductAcceptor
 			if(rowCons.size()>0)
 			{
 				// If the machine accepts the product
-				if(machine.giveProduct(rowCons.get(0)))
+				if(machine.giveProduct(rowCons.get(0)) && !rowCons.isEmpty())
 				{
-					if (rowCons.isEmpty()){
-						System.out.println("lol");
-					}
 					rowCons.remove(0);// Remove it from the queue
 					return true;
 				}
