@@ -1,4 +1,4 @@
-package Products;
+package Distribution;
 
 import java.util.Random;
 

@@ -1,6 +1,6 @@
 package Engine;
 
-import Products.PoissonProcess;
+import Distribution.PoissonProcess;
 import Products.Consumer;
 import Products.Corporate;
 /**

@@ -1,5 +1,7 @@
 package Products;
 
+import Distribution.PoissonProcess;
+
 /**
  * @author ohnoyes
  */
